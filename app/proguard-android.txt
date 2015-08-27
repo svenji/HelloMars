@@ -1,3 +1,4 @@
+-target 1.6
 -dontobfuscate
 
 -dontusemixedcaseclassnames
@@ -17,6 +18,14 @@
 # instead you will need to point to the
 # "proguard-android-optimize.txt" file instead of this one from your
 # project.properties file.
+
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 
 # We want to keep methods in Activity that could be used in the XML attribute onClick
 -keepclassmembers class * extends android.app.Activity {
@@ -71,6 +80,9 @@
 -keepclassmembers class * extends android.content.Context {
     public void *(android.view.View);
     public void *(android.view.MenuItem);
+}
+-keepclassmembers class * {
+    @com.google.inject.Inject <init>(...);
 }
 
 # ========================================================================================
@@ -135,6 +147,7 @@
 -keep class * extends dagger.internal.StaticInjection
 
 # Http
+-dontwarn okio.**
 -dontwarn retrofit.**
 -dontwarn com.squareup.okhttp.**
 -keep class com.squareup.okhttp.** { *; }
@@ -154,3 +167,7 @@
 -dontwarn com.pusher.**
 -dontwarn org.java_websocket.**
 -dontwarn org.slf4j.**
+
+# Guava
+-dontwarn javax.**
+-dontwarn sun.misc.Unsafe

@@ -2,6 +2,10 @@
 <manifest
     package="com.connect"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+         Version name, version code, minSdkVersion and targetSdkVersion are set on the build.gradle
+         file. The settings there override those here, anyway
+    -->
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
