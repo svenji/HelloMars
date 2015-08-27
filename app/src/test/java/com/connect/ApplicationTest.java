@@ -20,6 +20,6 @@ public class ApplicationTest {
 
     @Test
     public void test() throws Exception {
-        assertThat(true, equalTo(true));
+        assertThat(false, equalTo(true));
     }
 }
