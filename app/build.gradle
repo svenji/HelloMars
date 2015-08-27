@@ -1,0 +1,156 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.3.1'
+        classpath 'io.fabric.tools:gradle:1.19.1'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://github.com/donnfelker/mvn-repo/raw/master/' }
+    mavenLocal()
+    jcenter()
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        applicationId "com.connect"
+        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+
+        proguardFile 'proguard-android.txt'
+        //        renderscriptTargetApi Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        //        renderscriptSupportModeEnabled true
+    }
+
+    packagingOptions {
+        // Exclude file to avoid
+        // Error: Duplicate files during packaging of APK
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'LICENSE.txt'
+    }
+
+    // signingConfigs {
+    //    debug {
+    //        storeFile file('debug.keystore')
+    //        keyAlias 'androiddebugkey'
+    //        keyPassword 'android'
+    //        storePassword 'android'
+    //    }
+    // release {
+    // storeFile file(System.getenv('ANDROID_KEYSTORE_PATH'))
+    // storePassword System.getenv('ANDROID_STORE_PASS')
+    // keyAlias System.getenv('ANDROID_KEY_ALIAS')
+    // keyPassword System.getenv('ANDROID_KEY_PASS')
+    // }
+    // }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled true
+            zipAlignEnabled true
+            applicationIdSuffix '.debug'
+        }
+        release {
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            // signingConfig signingConfigs.release
+            // testPackageName 'com.donnfelker.android.bootstrap.tests'
+            // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
+        }
+    }
+    sourceSets {
+        androidTest {
+            setRoot('src/test')
+        }
+    }
+    //    compileOptions {
+    //        sourceCompatibility JavaVersion.VERSION_1_7
+    //        targetCompatibility JavaVersion.VERSION_1_7
+    //    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Google Play Services
+    //    compile 'com.google.android.gms:play-services-analytics:7.8.0'
+    //    compile 'com.google.android.gms:play-services-gcm:7.8.0'
+    //    compile 'com.google.android.gms:play-services-location:7.8.0'
+    //    compile 'com.google.android.gms:play-services-maps:7.8.0'
+    //    compile 'com.google.android.gms:play-services-nearby:7.8.0'
+    //    compile 'com.google.android.gms:play-services-plus:7.8.0'
+
+    // Utils
+    //    compile 'com.google.guava:guava:18.0'
+
+    // Phone Utils
+    //    compile 'com.googlecode.libphonenumber:libphonenumber:7.0.9'
+
+    // Sockets
+    //    compile 'com.pusher:pusher-java-client:0.3.3'
+
+    // GSON
+    compile 'com.google.code.gson:gson:2.3.1'
+
+    // Observables
+    compile 'io.reactivex:rxjava:1.0.14'
+
+    // Dependency Injection
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    // View Injection
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    // Logging
+    compile 'com.jakewharton.timber:timber:3.1.0'
+
+    // Image Loading
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // HTTP
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
+
+    // Android Support Libs
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v13:22.2.1'
+
+    // Fabric/Crashlytics
+    compile('com.crashlytics.sdk.android:crashlytics:2.3.2@aar') {
+        transitive = true
+    }
+
+    // Memory Leaks
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.robolectric:robolectric:3.0'
+}
