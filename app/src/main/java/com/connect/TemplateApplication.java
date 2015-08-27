@@ -4,10 +4,8 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.connect.com.connect.core.Injector;
-import com.crashlytics.android.Crashlytics;
 
 import dagger.ObjectGraph;
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by sven on 8/26/15.
@@ -18,8 +16,7 @@ public class TemplateApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this,
-                    new Crashlytics());
+        //        Fabric.with(this, new Crashlytics());
 
         // Dagger Setup
         graph = ObjectGraph.create(new AndroidModule(this));

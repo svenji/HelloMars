@@ -146,6 +146,9 @@
 
 # RxJava
 -dontwarn rx.**
+-dontwarn org.mockito.**
+-dontwarn org.junit.**
+-dontwarn org.robolectric.**
 
 # Pusher
 -dontwarn com.pusher.**
