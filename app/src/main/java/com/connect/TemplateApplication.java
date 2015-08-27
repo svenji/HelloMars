@@ -16,7 +16,12 @@ public class TemplateApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Crashlytics
         //        Fabric.with(this, new Crashlytics());
+
+        // Leak Canary
+        //        LeakCanary.install(this);
 
         // Dagger Setup
         graph = ObjectGraph.create(new AndroidModule(this));
