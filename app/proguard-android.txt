@@ -171,3 +171,6 @@
 # Guava
 -dontwarn javax.**
 -dontwarn sun.misc.Unsafe
+
+# Misc.
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
