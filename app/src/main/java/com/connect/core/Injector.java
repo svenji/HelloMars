@@ -1,4 +1,4 @@
-package com.connect.com.connect.core;
+package com.connect.core;
 
 import android.content.Context;
 

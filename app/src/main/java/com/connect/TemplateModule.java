@@ -4,7 +4,7 @@ package com.connect;
  * Created by sven on 8/26/15.
  */
 
-import com.connect.com.connect.core.RetrofitErrorHandler;
+import com.connect.core.RetrofitErrorHandler;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -20,12 +20,15 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(
-        complete = false,
-        library = true,
-        injects = {
-                TemplateApplication.class,
-                MainActivity.class
-        }
+    complete = false,
+    library = true,
+    injects = {
+        TemplateApplication.class,
+        MainActivity.class
+    },
+    includes = {
+
+    }
 )
 public class TemplateModule {
     //////////////////////////////////////////////////////////////

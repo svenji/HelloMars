@@ -19,10 +19,10 @@ import dagger.Provides;
  */
 @Module(library = true,
     injects = {
-            TemplateApplication.class
+        TemplateApplication.class
     },
     includes = {
-            TemplateModule.class
+        TemplateModule.class
     }
 )
 public class AndroidModule {

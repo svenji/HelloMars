@@ -2,10 +2,20 @@ package com.connect;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.connect.com.connect.core.Injector;
+import com.connect.core.Injector;
+import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.LeakCanary;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import io.fabric.sdk.android.Fabric;
+import timber.log.Timber;
 
 /**
  * Created by sven on 8/26/15.
@@ -13,19 +23,30 @@ import dagger.ObjectGraph;
 public class TemplateApplication extends Application {
     private ObjectGraph graph;
 
+    @Inject
+    public TemplateApplication() {
+        super();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Crashlytics
-        //        Fabric.with(this, new Crashlytics());
-
-        // Leak Canary
-        //        LeakCanary.install(this);
+        // Timber
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new CrashReportingTree());
+        }
 
         // Dagger Setup
-        graph = ObjectGraph.create(new AndroidModule(this));
+        graph = ObjectGraph.create(getModules().toArray());
         graph.inject(this);
+
+        // Crashlytics
+        initializeCrashlytics();
+
+        // Leak Canary
+        initializeLeakCanary();
     }
 
     @Override
@@ -34,5 +55,43 @@ public class TemplateApplication extends Application {
             return graph;
         }
         return super.getSystemService(name);
+    }
+
+    protected List<Object> getModules() {
+        List<Object> modules = new ArrayList<Object>();
+        modules.add(new AndroidModule(this));
+        return modules;
+    }
+
+    protected void initializeCrashlytics() {
+        Fabric.with(this, new Crashlytics());
+    }
+
+    protected void initializeLeakCanary() {
+        LeakCanary.install(this);
+    }
+
+    /** A tree which logs important information for crash reporting. */
+    private static class CrashReportingTree extends Timber.Tree {
+        @Override
+        protected void log(int priority,
+            String tag,
+            String message,
+            Throwable throwable
+        ) {
+            if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+                return;
+            }
+
+            Crashlytics.log(priority, tag, message);
+
+            if (throwable != null) {
+                if (priority == Log.ERROR) {
+                    Crashlytics.logException(throwable);
+                } else if (priority == Log.WARN) {
+                    Crashlytics.logException(throwable);
+                }
+            }
+        }
     }
 }
