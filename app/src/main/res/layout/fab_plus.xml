@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/floating_action_button"
+        android:layout_width="@dimen/fab_button_diameter"
+        android:layout_height="@dimen/fab_button_diameter"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/fab_margin_from_edge"
+        android:layout_marginRight="@dimen/fab_margin_from_edge"
+        android:background="@drawable/fab_plus"/>
+    <ImageView
+        android:layout_width="@dimen/fab_icon_diameter"
+        android:layout_height="@dimen/fab_icon_diameter"
+        android:layout_centerInParent="true"
+        android:src="@drawable/icon_plus_white"/>
+</RelativeLayout>

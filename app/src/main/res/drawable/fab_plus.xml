@@ -5,10 +5,4 @@
             <solid android:color="@color/connect_blue" />
         </shape>
     </item>
-    <item
-        android:bottom="8dp"
-        android:drawable="@drawable/icon_plus_white"
-        android:left="8dp"
-        android:right="8dp"
-        android:top="8dp" />
 </layer-list>
