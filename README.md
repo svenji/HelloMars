@@ -28,6 +28,7 @@ Follow the instructions to duplicate the boilerplate repository into your own so
 + rm -rf old-repo.git
 + cd ..
 + rm -rf foo
+
 You should now have an exact duplicate of the boilerplate repository in your own new repository. Follow the Installation and Build instructions using this new repository
 
 ### Android Installation and Build Instructions: 
