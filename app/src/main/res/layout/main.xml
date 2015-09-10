@@ -9,6 +9,12 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!-- Left Drawer -->
+        <FrameLayout
+            android:id="@+id/left_drawer"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"/>
 
         <!-- Main App Content -->
         <LinearLayout
@@ -24,11 +30,11 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
-        <!-- Left Drawer -->
-        <FrameLayout
-            android:id="@+id/left_drawer"
-            android:layout_width="@dimen/drawer_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"/>
+        <!-- Right Drawer -->
+        <!--<FrameLayout-->
+            <!--android:id="@+id/right_drawer"-->
+            <!--android:layout_width="@dimen/drawer_width"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="end"/>-->
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

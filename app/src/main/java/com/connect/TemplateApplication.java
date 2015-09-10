@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.connect.core.Injector;
 import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.AndroidExcludedRefs;
+import com.squareup.leakcanary.DisplayLeakService;
+import com.squareup.leakcanary.ExcludedRefs;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
@@ -68,13 +71,18 @@ public class TemplateApplication extends Application {
     }
 
     protected void initializeLeakCanary() {
-        LeakCanary.install(this);
+        ExcludedRefs.Builder excludedRefsBuilder = AndroidExcludedRefs.createAppDefaults();
+        // Workaround for excluding Google Play Services leaks
+        //        excludedRefsBuilder.staticField("com.google.android.chimera.container.a", "a");
+        //        excludedRefsBuilder.staticField("com.google.android.gms.location.internal.t", "a");
+        LeakCanary.install(this, DisplayLeakService.class, excludedRefsBuilder.build());
     }
 
     /** A tree which logs important information for crash reporting. */
     private static class CrashReportingTree extends Timber.Tree {
         @Override
-        protected void log(int priority,
+        protected void log(
+            int priority,
             String tag,
             String message,
             Throwable throwable

@@ -3,6 +3,23 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Text Size -->
+    <dimen name="text_size_mini">6sp</dimen>
+    <dimen name="text_size_tiny">9sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_extra_large">21sp</dimen>
+    <dimen name="text_size_huge">24sp</dimen>
+
+    <!-- Padding -->
+    <dimen name="padding_tiny">5dp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_medium">15dp</dimen>
+    <dimen name="padding_large">20dp</dimen>
+    <dimen name="padding_extra_large">25dp</dimen>
+    <dimen name="padding_huge">45dp</dimen>
+
     <!-- Drawer -->
     <dimen name="drawer_width">240dp</dimen>
 

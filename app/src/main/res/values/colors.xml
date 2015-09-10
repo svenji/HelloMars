@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="connect_blue">#21b6d7</color>
+    <color name="connect_text_gray">#b3b3b3</color>
+    <color name="connect_text_gray_dark">#333333</color>
+    <color name="connect_gray_light">#eeeeee</color>
 </resources>
