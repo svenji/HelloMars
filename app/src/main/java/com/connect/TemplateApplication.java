@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
@@ -66,10 +67,12 @@ public class TemplateApplication extends Application {
         return modules;
     }
 
+    @DebugLog
     protected void initializeCrashlytics() {
         Fabric.with(this, new Crashlytics());
     }
 
+    @DebugLog
     protected void initializeLeakCanary() {
         ExcludedRefs.Builder excludedRefsBuilder = AndroidExcludedRefs.createAppDefaults();
         // Workaround for excluding Google Play Services leaks

@@ -113,9 +113,12 @@
 }
 
 -keepnames @com.google.android.gms.common.annotation.KeepName class *
+
 -keepclassmembernames class * {
     @com.google.android.gms.common.annotation.KeepName *;
 }
+
+-dontwarn com.google.android.gms.**
 
 # Required if you ARE using IAP:
 #-keep class com.android.vending.billing.**
@@ -171,6 +174,9 @@
 # Guava
 -dontwarn javax.**
 -dontwarn sun.misc.Unsafe
+
+# LeakCanary
+-dontwarn com.squareup.leakcanary.**
 
 # Misc.
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
