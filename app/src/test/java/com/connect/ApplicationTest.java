@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 @Config(
     constants = BuildConfig.class,
     packageName = "com.connect",
-    application = TestTemplateApplication.class
+    application = TestTemplateApplicationImpl.class
 )
 public class ApplicationTest {
     @Before
@@ -30,8 +30,8 @@ public class ApplicationTest {
     @Module(
         injects = {
             ApplicationTest.class,
-            TemplateApplication.class,
-            TestTemplateApplication.class
+            TemplateApplicationImpl.class,
+            TestTemplateApplicationImpl.class
         },
         includes = AndroidModule.class,
         overrides = true

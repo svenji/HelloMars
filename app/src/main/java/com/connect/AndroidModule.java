@@ -19,22 +19,22 @@ import dagger.Provides;
  */
 @Module(library = true,
     injects = {
-        TemplateApplication.class
+        TemplateApplicationImpl.class
     },
     includes = {
         TemplateModule.class
     }
 )
 public class AndroidModule {
-    private final TemplateApplication app;
+    private final TemplateApplicationImpl app;
 
-    public AndroidModule(TemplateApplication app) {
+    public AndroidModule(TemplateApplicationImpl app) {
         this.app = app;
     }
 
     @Provides
     @Singleton
-    TemplateApplication provideTemplateApplication() {
+    TemplateApplicationImpl provideTemplateApplication() {
         return this.app;
     }
 

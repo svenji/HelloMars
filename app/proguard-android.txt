@@ -162,9 +162,6 @@
 
 # RxJava
 -dontwarn rx.**
--dontwarn org.mockito.**
--dontwarn org.junit.**
--dontwarn org.robolectric.**
 
 # Pusher
 -dontwarn com.pusher.**
@@ -176,7 +173,14 @@
 -dontwarn sun.misc.Unsafe
 
 # LeakCanary
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
 -dontwarn com.squareup.leakcanary.**
+
+# Unit Testing
+-dontwarn org.mockito.**
+-dontwarn org.junit.**
+-dontwarn org.robolectric.**
 
 # Misc.
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry

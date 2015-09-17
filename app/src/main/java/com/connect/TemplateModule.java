@@ -23,7 +23,7 @@ import retrofit.converter.GsonConverter;
     complete = false,
     library = true,
     injects = {
-        TemplateApplication.class,
+        TemplateApplicationImpl.class,
         MainActivity.class
     },
     includes = {

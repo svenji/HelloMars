@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by sven on 8/28/15.
  */
-public class TestTemplateApplication extends TemplateApplication {
+public class TestTemplateApplicationImpl extends TemplateApplicationImpl {
     @Override
     protected void initializeCrashlytics() {
 
