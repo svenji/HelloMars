@@ -36,11 +36,11 @@ You should now have an exact duplicate of the boilerplate repository in your own
 + If you receive an error from Crashlytics, download the plugin from here: https://fabric.io/downloads/android-studio and ask Steve to be added to the Connect organization
 
 ### Unit Tests (JUnit):
-+ cd your-directory
-+ ./gradlew testDebug --continue --debug --stacktrace
++ cd your-directory (or use the Terminal tab in Android Studio)
++ ./gradlew testDebug --continue (use --debug and --stacktrace options as necessary)
 
 ### Static Code Analysis (Lint):
-+ cd your-directory
++ cd your-directory (or use the Terminal tab in Android Studio)
 + ./gradlew lint
 
 ### Continuous Integration with Ship.io:
@@ -49,3 +49,9 @@ You should now have an exact duplicate of the boilerplate repository in your own
 + Add task to 'Build an Android Project' with task 'app:build'
 + Add task to 'Run Script' and choose 'bash' with unit test command
 + Add task to 'Run Script' and choose 'bash' with static code analysis command
+
+### Code Coverage with JaCoCo
++ cd your-directory (or use the Terminal tab in Android Studio)
++ ./gradlew clean assemble
++ ./gradle jacocoTestReport (use --debug and --stacktrace options as necessary)
++ Code coverage results are located in '/build/reports/jacoco/jacocoTestReport'
