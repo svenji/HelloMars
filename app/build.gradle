@@ -23,6 +23,7 @@ repositories {
     mavenLocal()
     jcenter()
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 android {
@@ -43,26 +44,29 @@ android {
     }
 
     packagingOptions {
-        // Exclude file to avoid
-        // Error: Duplicate files during packaging of APK
         exclude 'META-INF/services/javax.annotation.processing.Processor'
-        exclude 'LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
     }
 
-     signingConfigs {
+    signingConfigs {
         debug {
             storeFile file('debug.keystore')
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storePassword 'android'
         }
-    // release {
-    // storeFile file(System.getenv('ANDROID_KEYSTORE_PATH'))
-    // storePassword System.getenv('ANDROID_STORE_PASS')
-    // keyAlias System.getenv('ANDROID_KEY_ALIAS')
-    // keyPassword System.getenv('ANDROID_KEY_PASS')
-    // }
-     }
+        // release {
+        // storeFile file(System.getenv('ANDROID_KEYSTORE_PATH'))
+        // storePassword System.getenv('ANDROID_STORE_PASS')
+        // keyAlias System.getenv('ANDROID_KEY_ALIAS')
+        // keyPassword System.getenv('ANDROID_KEY_PASS')
+        // }
+    }
 
     lintOptions {
         abortOnError false
@@ -74,7 +78,7 @@ android {
             jniDebuggable true
             minifyEnabled true
             zipAlignEnabled true
-            applicationIdSuffix '.debug'
+//            applicationIdSuffix '.debug'
             testCoverageEnabled = true
         }
         release {
@@ -82,6 +86,7 @@ android {
             jniDebuggable false
             minifyEnabled true
             zipAlignEnabled true
+            testCoverageEnabled = false
             // signingConfig signingConfigs.release
             // testPackageName 'com.donnfelker.android.bootstrap.tests'
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
@@ -92,10 +97,12 @@ android {
             setRoot('src/test')
         }
     }
-    //    compileOptions {
-    //        sourceCompatibility JavaVersion.VERSION_1_7
-    //        targetCompatibility JavaVersion.VERSION_1_7
-    //    }
+
+    //!! REMARK !!
+    //add this library to work with Robolectric 3.0 when your API level >= 23.
+    //the HttpClient has been removed as of API Level 23, but Robolectric is automatically
+    //shadowing this class. So add it, even though you're not using it.
+//    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -109,7 +116,7 @@ dependencies {
     //    compile 'com.google.android.gms:play-services-nearby:7.8.0'
     //    compile 'com.google.android.gms:play-services-plus:7.8.0'
 
-    // Utils
+    // Utils - BE CAREFUL WHEN USING - 14,842 method count
     //    compile 'com.google.guava:guava:18.0'
 
     // Phone Utils
@@ -143,9 +150,9 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
 
     // Android Support Libs
-    compile 'com.android.support:support-v4:23.0.1'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:support-v13:23.0.1'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v13:22.2.1'
 
     // Fabric/Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
@@ -162,11 +169,12 @@ dependencies {
     testCompile 'org.hamcrest:hamcrest-core:1.3'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
     testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.robolectric:robolectric:3.1-SNAPSHOT'
 }
 
 // Jacoco - Test Coverage
 apply plugin: 'jacoco'
+
 jacoco {
     toolVersion = "0.7.1.201405082137"
 }
@@ -175,15 +183,16 @@ def coverageSourceDirs = [
         '../app/src/main/java'
 ]
 
-task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
     group = "Reporting"
-
     description = "Generate Jacoco coverage reports"
 
     classDirectories = fileTree(
             dir: '../app/build/intermediates/classes/debug',
             excludes: ['**/R.class',
                        '**/R$*.class',
+                       '**/*$InjectAdapter.class',
+                       '**/*$ModuleAdapter*.class',
                        '**/*$ViewInjector*.*',
                        '**/BuildConfig.*',
                        '**/Manifest*.*']
@@ -194,8 +203,29 @@ task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
     executionData = files('../app/build/jacoco/testDebug.exec')
 
     reports {
-        xml.enabled = true
         html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
     }
 
+    onlyIf = {
+        true
+    }
+
+    doFirst {
+        new File('app/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+
+        executionData = files(executionData.findAll {
+            it.exists()
+        })
+    }
+
+    afterEvaluate {
+        // just clean up coveralls dashboard, following reports are not of interest
+        testDebugUnitTest.reports.junitXml.enabled = false
+    }
 }

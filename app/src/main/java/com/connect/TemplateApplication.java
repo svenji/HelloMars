@@ -49,9 +49,14 @@ public class TemplateApplication extends Application {
         return super.getSystemService(name);
     }
 
+    protected void initializeCrashlytics() {
+    }
+
+    protected void initializeLeakCanary() {
+    }
+
     protected List<Object> getModules() {
-        List<Object> modules = new ArrayList<Object>();
-        return modules;
+        return new ArrayList<Object>();
     }
 
     /** A tree which logs important information for crash reporting. */

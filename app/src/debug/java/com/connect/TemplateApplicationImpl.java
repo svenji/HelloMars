@@ -26,21 +26,23 @@ public class TemplateApplicationImpl extends TemplateApplication {
     }
 
     @Override
-    protected List<Object> getModules() {
-        List<Object> modules = super.getModules();
-        modules.add(new AndroidModule(this));
-        return modules;
-    }
-
     protected void initializeCrashlytics() {
         Fabric.with(this, new Crashlytics());
     }
 
+    @Override
     protected void initializeLeakCanary() {
         ExcludedRefs.Builder excludedRefsBuilder = AndroidExcludedRefs.createAppDefaults();
         // Workaround for excluding Google Play Services leaks
         //        excludedRefsBuilder.staticField("com.google.android.chimera.container.a", "a");
         //        excludedRefsBuilder.staticField("com.google.android.gms.location.internal.t", "a");
         LeakCanary.install(this, DisplayLeakService.class, excludedRefsBuilder.build());
+    }
+
+    @Override
+    protected List<Object> getModules() {
+        List<Object> modules = super.getModules();
+        modules.add(new AndroidModule(this));
+        return modules;
     }
 }

@@ -19,13 +19,14 @@ public class TemplateApplicationImpl extends TemplateApplication {
     }
 
     @Override
+    protected void initializeCrashlytics() {
+        Fabric.with(this, new Crashlytics());
+    }
+
+    @Override
     protected List<Object> getModules() {
         List<Object> modules = super.getModules();
         modules.add(new AndroidModule(this));
         return modules;
-    }
-
-    protected void initializeCrashlytics() {
-        Fabric.with(this, new Crashlytics());
     }
 }
