@@ -7,6 +7,8 @@ package com.connect;
 import com.connect.core.RetrofitErrorHandler;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +34,17 @@ import retrofit.converter.GsonConverter;
 )
 public class TemplateModule {
     //////////////////////////////////////////////////////////////
-    ////////////////////// Retrofit// ////////////////////////////
+    //////////////////////// Otto ////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    @Provides
+    @Singleton
+    public Bus provideBus() {
+        // Event bus running on any thread - ThreadEnforcer.MAIN is default
+        return new Bus(ThreadEnforcer.ANY);
+    }
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////// Retrofit //////////////////////////////
     //////////////////////////////////////////////////////////////
     @Provides
     @Singleton
@@ -65,30 +77,24 @@ public class TemplateModule {
     @Singleton
     OkHttpClient provideOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(
-                15,
-                TimeUnit.SECONDS
-        );
-        client.setReadTimeout(
-                120,
-                TimeUnit.SECONDS
-        );
+        client.setConnectTimeout(15, TimeUnit.SECONDS);
+        client.setReadTimeout(120, TimeUnit.SECONDS);
         return client;
     }
 
     @Provides
     @Singleton
     RestAdapter provideConnectAPIRestAdapter(
-            RequestInterceptor requestInterceptor,
-            OkHttpClient client,
-            Gson gson
+        RequestInterceptor requestInterceptor,
+        OkHttpClient client,
+        Gson gson
     ) {
         return new RestAdapter.Builder().setRequestInterceptor(requestInterceptor)
-//                                        .setEndpoint(BuildConfig.CONNECT_ENDPOINT)
-                                        .setClient(new OkClient(client))
-                                        .setConverter(new GsonConverter(gson))
-                                        .setLogLevel(RestAdapter.LogLevel.FULL)
-                                        .setErrorHandler(new RetrofitErrorHandler())
-                                        .build();
+            //                                        .setEndpoint(BuildConfig.CONNECT_ENDPOINT)
+            .setClient(new OkClient(client))
+            .setConverter(new GsonConverter(gson))
+            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .setErrorHandler(new RetrofitErrorHandler())
+            .build();
     }
 }

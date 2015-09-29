@@ -182,5 +182,12 @@
 -dontwarn org.junit.**
 -dontwarn org.robolectric.**
 
+# Otto
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
+
 # Misc.
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry

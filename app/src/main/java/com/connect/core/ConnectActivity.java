@@ -4,17 +4,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
+import com.squareup.otto.Bus;
+
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
 
 /**
  * Created by sven on 8/26/15.
  */
 public class ConnectActivity extends AppCompatActivity {
+    @Inject Bus bus;
+
     protected ObjectGraph activityGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Register event bus
+        bus.register(this);
 
         // Explicitly reference the application object since we don't want to match our own injector.
         ObjectGraph appGraph = Injector.obtain(getApplication());
@@ -24,6 +33,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        bus.unregister(this);
         activityGraph = null;
         super.onDestroy();
     }

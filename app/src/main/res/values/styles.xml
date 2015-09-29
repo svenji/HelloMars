@@ -1,4 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ConnectToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:maxHeight">@dimen/abc_action_bar_default_height_material</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <!-- No need for colorPrimary, colorPrimaryDark, colorAccent here these should go to the AppTheme -->
+    </style>
+
     <style name="DefaultTextStyle">
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_extra_large</item>

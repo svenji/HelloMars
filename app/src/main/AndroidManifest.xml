@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.connect"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!--
@@ -22,12 +23,21 @@
         android:glEsVersion="0x00020000"
         android:required="true"/>
 
+    <!-- Used when running Lint - otherwise throws warnings/errors regarding API level -->
+    <uses-sdk
+        android:maxSdkVersion="23"
+        android:minSdkVersion="15"
+        android:targetSdkVersion="22"
+        tools:ignore="GradleOverrides,OldTargetApi"/>
+
     <application
         android:name=".TemplateApplicationImpl"
         android:allowBackup="true"
+        android:supportsRtl="true"
         android:icon="@mipmap/icon_connect_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
