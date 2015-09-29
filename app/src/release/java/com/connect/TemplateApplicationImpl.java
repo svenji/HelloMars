@@ -1,5 +1,7 @@
 package com.connect;
 
+import com.connect.core.AndroidModule;
+import com.connect.core.TemplateApplication;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
@@ -24,9 +26,15 @@ public class TemplateApplicationImpl extends TemplateApplication {
     }
 
     @Override
-    protected List<Object> getModules() {
-        List<Object> modules = super.getModules();
-        modules.add(new AndroidModule(this));
-        return modules;
+    public Object getSystemService(@NonNull String name) {
+        if (rootScope == null) {
+            rootScope = MortarScope.buildRootScope()
+                .withService(ObjectGraphService.SERVICE_NAME, ObjectGraph.create(new RootModule(), new AndroidModule(this)))
+                .build("Root");
+        }
+
+        if (rootScope.hasService(name)) return rootScope.getService(name);
+
+        return super.getSystemService(name);
     }
 }

@@ -1,4 +1,4 @@
-package com.connect.core;
+package com.connect.util;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;

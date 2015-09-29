@@ -1,10 +1,14 @@
-package com.connect;
+package com.connect.core;
 
 /**
  * Created by sven on 8/26/15.
  */
 
-import com.connect.core.RetrofitErrorHandler;
+import com.connect.TemplateApplicationImpl;
+import com.connect.activities.MainActivity;
+import com.connect.drawer.DrawerPresenter;
+import com.connect.util.GsonParceler;
+import com.connect.util.RetrofitErrorHandler;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -16,6 +20,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import flow.StateParceler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -29,10 +34,10 @@ import retrofit.converter.GsonConverter;
         MainActivity.class
     },
     includes = {
-
+        DrawerPresenter.Module.class
     }
 )
-public class TemplateModule {
+public class RootModule {
     //////////////////////////////////////////////////////////////
     //////////////////////// Otto ////////////////////////////////
     //////////////////////////////////////////////////////////////
@@ -41,6 +46,12 @@ public class TemplateModule {
     public Bus provideBus() {
         // Event bus running on any thread - ThreadEnforcer.MAIN is default
         return new Bus(ThreadEnforcer.ANY);
+    }
+
+    @Provides
+    @Singleton
+    StateParceler provideParcer(Gson gson) {
+        return new GsonParceler(gson);
     }
 
     //////////////////////////////////////////////////////////////

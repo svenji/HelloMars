@@ -1,5 +1,11 @@
 package com.connect;
 
+import android.support.annotation.NonNull;
+
+import com.connect.core.AndroidModule;
+import com.connect.core.RootModule;
+import com.connect.core.TemplateApplication;
+import com.connect.util.ObjectGraphService;
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.AndroidExcludedRefs;
 import com.squareup.leakcanary.DisplayLeakService;
@@ -8,7 +14,9 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
+import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
+import mortar.MortarScope;
 
 /**
  * Created by sven on 9/17/15.
@@ -40,9 +48,15 @@ public class TemplateApplicationImpl extends TemplateApplication {
     }
 
     @Override
-    protected List<Object> getModules() {
-        List<Object> modules = super.getModules();
-        modules.add(new AndroidModule(this));
-        return modules;
+    public Object getSystemService(@NonNull String name) {
+        if (rootScope == null) {
+            rootScope = MortarScope.buildRootScope()
+                .withService(ObjectGraphService.SERVICE_NAME, ObjectGraph.create(new RootModule(), new AndroidModule(this)))
+                .build("Root");
+        }
+
+        if (rootScope.hasService(name)) return rootScope.getService(name);
+
+        return super.getSystemService(name);
     }
 }

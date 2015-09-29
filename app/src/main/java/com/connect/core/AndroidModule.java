@@ -1,4 +1,4 @@
-package com.connect;
+package com.connect.core;
 
 /**
  * Created by sven on 8/26/15.
@@ -8,6 +8,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.connect.TemplateApplicationImpl;
 
 import javax.inject.Singleton;
 
@@ -21,9 +23,7 @@ import dagger.Provides;
     injects = {
         TemplateApplicationImpl.class
     },
-    includes = {
-        TemplateModule.class
-    }
+    addsTo = RootModule.class
 )
 public class AndroidModule {
     private final TemplateApplicationImpl app;
