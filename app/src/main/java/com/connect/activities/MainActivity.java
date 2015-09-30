@@ -12,11 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import com.connect.R;
-import com.connect.screens.DrawerScreen;
 import com.connect.screens.HomeScreen;
 import com.connect.util.ObjectGraphService;
+import com.connect.views.DrawerView;
 import com.connect.views.FramePathContainerView;
 import com.squareup.otto.Bus;
 

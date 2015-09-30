@@ -5,6 +5,7 @@ import android.content.Context;
 
 import dagger.ObjectGraph;
 import mortar.MortarScope;
+import timber.log.Timber;
 
 /**
  * Created by sven on 9/29/15.

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- Left Drawer -->
-        <FrameLayout
+        <com.connect.views.DrawerView
             android:id="@+id/left_drawer"
             android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"

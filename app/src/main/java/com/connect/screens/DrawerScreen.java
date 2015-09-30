@@ -1,11 +1,8 @@
 package com.connect.screens;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
-import com.connect.R;
-import com.connect.core.RootModule;
-import com.connect.util.Layout;
-import com.connect.util.WithModule;
 import com.connect.views.DrawerView;
 
 import javax.inject.Inject;
@@ -17,17 +14,13 @@ import mortar.ViewPresenter;
 /**
  * Created by sven on 9/29/15.
  */
-@Layout(R.layout.home)
-@WithModule(DrawerScreen.Module.class)
 public class DrawerScreen extends Path {
-    @dagger.Module(injects = DrawerView.class, addsTo = RootModule.class, library = true, complete = false)
-    public class Module {
+    @dagger.Module(library = true, complete = false)
+    public static class Module {
     }
 
     @Singleton
     public static class Presenter extends ViewPresenter<DrawerView> {
-        private int counter;
-
         @Inject
         Presenter() {
         }
@@ -36,13 +29,12 @@ public class DrawerScreen extends Path {
         public void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (!hasView()) return;
-            counter = savedInstanceState.getInt("counter");
+            getView().setBackgroundColor(Color.WHITE);
         }
 
         @Override
         protected void onSave(Bundle outState) {
             super.onSave(outState);
-            outState.putInt("counter", ++counter);
         }
     }
 }

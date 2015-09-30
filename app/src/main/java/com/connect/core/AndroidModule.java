@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.connect.TemplateApplicationImpl;
+import com.connect.screens.DrawerScreen;
+import com.connect.views.DrawerView;
 
 import javax.inject.Singleton;
 
@@ -21,7 +23,11 @@ import dagger.Provides;
  */
 @Module(library = true,
     injects = {
-        TemplateApplicationImpl.class
+        TemplateApplicationImpl.class,
+        DrawerView.class
+    },
+    includes = {
+        DrawerScreen.Module.class
     },
     addsTo = RootModule.class
 )
