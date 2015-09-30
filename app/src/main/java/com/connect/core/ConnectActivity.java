@@ -22,13 +22,13 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Register event bus
-        bus.register(this);
-
         // Explicitly reference the application object since we don't want to match our own injector.
         ObjectGraph appGraph = Injector.obtain(getApplication());
         appGraph.inject(this);
         //        activityGraph = appGraph.plus(new ConnectActivityModule(this));
+
+        // Register event bus
+        bus.register(this);
     }
 
     @Override
