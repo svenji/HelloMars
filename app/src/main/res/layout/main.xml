@@ -30,6 +30,14 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
+        <!-- Left Drawer -->
+        <FrameLayout
+            android:id="@+id/left_drawer"
+            android:layout_width="@dimen/drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/connect_gray_light"/>
+
         <!-- Right Drawer -->
         <!--<FrameLayout-->
             <!--android:id="@+id/right_drawer"-->
