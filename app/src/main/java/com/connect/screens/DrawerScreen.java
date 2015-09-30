@@ -6,52 +6,37 @@ import com.connect.R;
 import com.connect.core.RootModule;
 import com.connect.util.Layout;
 import com.connect.util.WithModule;
-import com.connect.views.HomeView;
+import com.connect.views.DrawerView;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Provides;
 import flow.path.Path;
 import mortar.ViewPresenter;
-import timber.log.Timber;
 
 /**
  * Created by sven on 9/29/15.
  */
-
 @Layout(R.layout.home)
-@WithModule(HomeScreen.Module.class)
-public class HomeScreen extends Path {
-    @dagger.Module(injects = HomeView.class, addsTo = RootModule.class)
+@WithModule(DrawerScreen.Module.class)
+public class DrawerScreen extends Path {
+    @dagger.Module(injects = DrawerView.class, addsTo = RootModule.class, library = true, complete = false)
     public class Module {
-        @Provides
-        String provideLabel() {
-            return "HELLO WORLD!";
-        }
     }
 
     @Singleton
-    public static class Presenter extends ViewPresenter<HomeView> {
-        private final String label;
-
-        private int counter = 0;
+    public static class Presenter extends ViewPresenter<DrawerView> {
+        private int counter;
 
         @Inject
-        Presenter(String label) {
-            this.label = label;
+        Presenter() {
         }
 
         @Override
         public void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (!hasView()) return;
-            if (savedInstanceState != null) {
-                counter = savedInstanceState.getInt("counter");
-            }
-            Timber.i("counter = " + counter);
-
-            getView().setHomeLabel(label + " " + counter);
+            counter = savedInstanceState.getInt("counter");
         }
 
         @Override

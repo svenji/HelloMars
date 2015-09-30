@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 /**
  * Created by sven on 9/29/15.
@@ -44,5 +45,10 @@ public class HomeView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         presenter.dropView(this);
+    }
+
+    @DebugLog
+    public void setHomeLabel(String sLabel) {
+        tvHome.setText(sLabel);
     }
 }

@@ -14,6 +14,8 @@ import mortar.bundler.BundleServiceRunner;
 
 /**
  * Created by sven on 8/26/15.
+ *
+ * Currently unused - left here as an example for setting up a simple activity with Mortar
  */
 public class CoreActivity extends AppCompatActivity {
     @Inject Bus bus;

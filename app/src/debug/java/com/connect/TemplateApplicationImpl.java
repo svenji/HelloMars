@@ -17,6 +17,7 @@ import java.util.List;
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import mortar.MortarScope;
+import timber.log.Timber;
 
 /**
  * Created by sven on 9/17/15.
@@ -50,6 +51,7 @@ public class TemplateApplicationImpl extends TemplateApplication {
     @Override
     public Object getSystemService(@NonNull String name) {
         if (rootScope == null) {
+            Timber.i("Running Impl");
             rootScope = MortarScope.buildRootScope()
                 .withService(ObjectGraphService.SERVICE_NAME, ObjectGraph.create(new RootModule(), new AndroidModule(this)))
                 .build("Root");

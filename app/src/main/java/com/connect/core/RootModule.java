@@ -6,7 +6,6 @@ package com.connect.core;
 
 import com.connect.TemplateApplicationImpl;
 import com.connect.activities.MainActivity;
-import com.connect.drawer.DrawerPresenter;
 import com.connect.util.GsonParceler;
 import com.connect.util.RetrofitErrorHandler;
 import com.google.gson.Gson;
@@ -34,7 +33,6 @@ import retrofit.converter.GsonConverter;
         MainActivity.class
     },
     includes = {
-        DrawerPresenter.Module.class
     }
 )
 public class RootModule {

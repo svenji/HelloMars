@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- Left Drawer -->
-        <com.connect.views.NavDrawerView
+        <FrameLayout
             android:id="@+id/left_drawer"
             android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <include layout="@layout/toolbar"/>
-            <com.connect.views.FramePathContainerView
+            <com.connect.views.MortarScreenSwitcherFrame
                 android:id="@+id/main_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

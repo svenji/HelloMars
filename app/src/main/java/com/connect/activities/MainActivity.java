@@ -14,10 +14,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.connect.R;
-import com.connect.drawer.DrawerPresenter;
+import com.connect.screens.DrawerScreen;
 import com.connect.screens.HomeScreen;
 import com.connect.util.ObjectGraphService;
 import com.connect.views.FramePathContainerView;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -33,12 +34,12 @@ import timber.log.Timber;
 
 import static mortar.bundler.BundleServiceRunner.getBundleServiceRunner;
 
-public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, DrawerPresenter.Activity {
+public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
     @Bind(R.id.drawer_layout) DrawerLayout           drawerLayout;
     @Bind(R.id.main_view)     FramePathContainerView container;
 
-    @Inject DrawerPresenter drawerPresenter;
-    @Inject StateParceler   parceler;
+    @Inject Bus           bus;
+    @Inject StateParceler parceler;
 
     private   ActionBarDrawerToggle toggleDrawer;
     private   FlowDelegate          flowDelegate;
@@ -61,10 +62,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                 .build(sScope);
         }
         ObjectGraphService.inject(this, this);
-
         getBundleServiceRunner(activityScope).onCreate(savedInstanceState);
-
-        drawerPresenter.takeView(this);
 
         // Set content view
         setContentView(R.layout.main);
@@ -125,6 +123,9 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         @SuppressWarnings("deprecation") FlowDelegate.NonConfigurationInstance nonConfig =
             (FlowDelegate.NonConfigurationInstance) getLastNonConfigurationInstance();
         flowDelegate = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, parceler, History.single(new HomeScreen()), this);
+
+        // Register event bus
+        bus.register(this);
     }
 
     @Override
@@ -150,6 +151,19 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     protected void onPause() {
         flowDelegate.onPause();
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Unregister event bus
+        bus.unregister(this);
+
+        // activityScope may be null in case isWrongInstance() returned true in onCreate()
+        if (isFinishing() && activityScope != null) {
+            activityScope.destroy();
+            activityScope = null;
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -195,10 +209,5 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
 
         return activityScope != null && activityScope.hasService(name) ? activityScope.getService(name)
             : super.getSystemService(name);
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
     }
 }
