@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Main App Content -->
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <com.connect.views.MortarScreenSwitcherFrame
+            android:id="@+id/main_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <!-- Left Drawer -->
+    <FrameLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/connect_gray_light"/>
+
+    <!-- Right Drawer -->
+    <!--<FrameLayout-->
+    <!--android:id="@+id/right_drawer"-->
+    <!--android:layout_width="@dimen/drawer_width"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="end"/>-->
+</android.support.v4.widget.DrawerLayout>

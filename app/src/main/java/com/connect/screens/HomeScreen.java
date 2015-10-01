@@ -20,7 +20,7 @@ import timber.log.Timber;
  * Created by sven on 9/29/15.
  */
 
-@Layout(R.layout.home)
+@Layout(R.layout.home_view)
 @WithModule(HomeScreen.Module.class)
 public class HomeScreen extends Path {
     @dagger.Module(injects = HomeView.class, addsTo = RootModule.class)

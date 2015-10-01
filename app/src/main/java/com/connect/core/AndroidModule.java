@@ -23,11 +23,7 @@ import dagger.Provides;
  */
 @Module(library = true,
     injects = {
-        TemplateApplicationImpl.class,
-        DrawerView.class
-    },
-    includes = {
-        DrawerScreen.Module.class
+        TemplateApplicationImpl.class
     },
     addsTo = RootModule.class
 )
