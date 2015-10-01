@@ -6,6 +6,7 @@ package com.connect.core;
 
 import com.connect.TemplateApplicationImpl;
 import com.connect.activities.MainActivity;
+import com.connect.android.ActionBarOwner;
 import com.connect.screens.DrawerScreen;
 import com.connect.util.GsonParceler;
 import com.connect.util.RetrofitErrorHandler;
@@ -32,6 +33,9 @@ import retrofit.converter.GsonConverter;
     injects = {
         TemplateApplicationImpl.class,
         MainActivity.class
+    },
+    includes = {
+        ActionBarOwner.ActionBarModule.class
     }
 )
 public class RootModule {

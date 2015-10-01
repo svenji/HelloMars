@@ -17,9 +17,12 @@ package com.connect.android;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
+import hugo.weaving.DebugLog;
 import mortar.Presenter;
 import mortar.bundler.BundleService;
 import rx.functions.Action0;
@@ -28,38 +31,29 @@ import static mortar.bundler.BundleService.getBundleService;
 
 /** Allows shared configuration of the Android ActionBar. */
 public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
-  public interface Activity {
-    void setShowHomeEnabled(boolean enabled);
+    public interface Activity {
+        void setDisplayShowHomeEnabled(boolean enabled);
 
-    void setUpButtonEnabled(boolean enabled);
+        void setHomeButtonEnabled(boolean enabled);
 
-    void setTitle(CharSequence title);
+        void setTitle(CharSequence title);
 
-    void setMenu(MenuAction action);
+        void setMenu(MenuAction action);
 
-    Context getContext();
-  }
+        Context getContext();
+    }
 
-  public static class Config {
-      public final boolean      showHomeEnabled;
-      public final boolean      upButtonEnabled;
-      public final CharSequence title;
-      public final MenuAction   action;
+    public static class Config {
+        public final boolean      showHomeEnabled;
+        public final boolean      upButtonEnabled;
+        public final CharSequence title;
 
-      public Config(
-          boolean showHomeEnabled, boolean upButtonEnabled, CharSequence title,
-          MenuAction action
-      ) {
-          this.showHomeEnabled = showHomeEnabled;
-          this.upButtonEnabled = upButtonEnabled;
-          this.title = title;
-          this.action = action;
-      }
-
-      public Config withAction(MenuAction action) {
-          return new Config(showHomeEnabled, upButtonEnabled, title, action);
-      }
-  }
+        public Config(boolean showHomeEnabled, boolean upButtonEnabled, CharSequence title) {
+            this.showHomeEnabled = showHomeEnabled;
+            this.upButtonEnabled = upButtonEnabled;
+            this.title = title;
+        }
+    }
 
     public static class MenuAction {
         public final CharSequence title;
@@ -81,6 +75,7 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
         if (config != null) update();
     }
 
+    @DebugLog
     public void setConfig(Config config) {
         this.config = config;
         update();
@@ -95,17 +90,17 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
         return getBundleService(activity.getContext());
     }
 
+    @DebugLog
     private void update() {
         if (!hasView()) return;
         Activity activity = getView();
 
-        activity.setShowHomeEnabled(config.showHomeEnabled);
-        activity.setUpButtonEnabled(config.upButtonEnabled);
+        activity.setDisplayShowHomeEnabled(config.showHomeEnabled);
+        activity.setHomeButtonEnabled(config.upButtonEnabled);
         activity.setTitle(config.title);
-        activity.setMenu(config.action);
     }
 
-    @Module(library = true)
+    @Module(library = true, complete = false)
     public static class ActionBarModule {
         @Provides
         @Singleton

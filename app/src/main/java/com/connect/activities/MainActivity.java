@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.connect.R;
+import com.connect.android.ActionBarOwner;
 import com.connect.screens.HomeScreen;
 import com.connect.util.ObjectGraphService;
 import com.connect.views.FramePathContainerView;
@@ -29,20 +31,21 @@ import flow.Flow.Traversal;
 import flow.FlowDelegate;
 import flow.History;
 import flow.StateParceler;
-import hugo.weaving.DebugLog;
+import flow.path.Path;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import timber.log.Timber;
 
 import static mortar.bundler.BundleServiceRunner.getBundleServiceRunner;
 
-public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
+public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, ActionBarOwner.Activity {
     @Bind(R.id.drawer_layout) DrawerLayout           drawerLayout;
     //    @Bind(R.id.left_drawer)   FramePathContainerView containerDrawer;
     @Bind(R.id.main_view)     FramePathContainerView containerContent;
 
-    @Inject Bus           bus;
-    @Inject StateParceler parceler;
+    @Inject Bus            bus;
+    @Inject StateParceler  parceler;
+    @Inject ActionBarOwner actionBarOwner;
 
     private ActionBarDrawerToggle toggleDrawer;
     private FlowDelegate          flowDelegate;
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set up logging tag
+        // Set logging tag
         Timber.tag("MainActivity");
 
         // Set up Mortar
@@ -119,10 +122,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
         // Set up Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        actionBarOwner.takeView(this);
 
         // Set up Flow
         @SuppressWarnings("deprecation") FlowDelegate.NonConfigurationInstance nonConfig =
@@ -161,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
 
     @Override
     protected void onDestroy() {
+        actionBarOwner.dropView(this);
+        actionBarOwner.setConfig(null);
+
         // Unregister event bus
         bus.unregister(this);
 
@@ -201,20 +204,6 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
     }
 
     @Override
-    public void onBackPressed() {
-        if (!containerContent.onBackPressed()) {
-            super.onBackPressed();
-        }
-    }
-
-    // Flow.Dispatcher
-    @DebugLog
-    @Override
-    public void dispatch(Traversal traversal, Flow.TraversalCallback callback) {
-        containerContent.dispatch(traversal, callback);
-    }
-
-    @Override
     public Object getSystemService(@NonNull String name) {
         if (flowDelegate != null) {
             Object flowService = flowDelegate.getSystemService(name);
@@ -223,5 +212,60 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
 
         return activityScope != null && activityScope.hasService(name) ? activityScope.getService(name)
             : super.getSystemService(name);
+    }
+
+    // BackSupport
+    @Override
+    public void onBackPressed() {
+        if (!containerContent.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    // Flow.Dispatcher
+    @Override
+    public void dispatch(Traversal traversal, Flow.TraversalCallback callback) {
+        Path newScreen = traversal.destination.top();
+        String title = newScreen.getClass().getSimpleName();
+        actionBarOwner.setConfig(new ActionBarOwner.Config(true, newScreen instanceof HomeScreen, title));
+        containerContent.dispatch(traversal, callback);
+    }
+
+    // ActionBarOwner.Activity
+    @Override
+    public void setDisplayShowHomeEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            Timber.w("setDisplayShowHomeEnabled(%s)", enabled);
+            actionBar.setDisplayShowHomeEnabled(enabled);
+        }
+    }
+
+    @Override
+    public void setHomeButtonEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            Timber.w("setHomeButtonEnabled(%s)", enabled);
+            actionBar.setDisplayHomeAsUpEnabled(enabled);
+            actionBar.setHomeButtonEnabled(enabled);
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setMenu(ActionBarOwner.MenuAction action) {
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }
