@@ -16,38 +16,52 @@
 
 package com.connect.util;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 public final class Utils {
-  public interface OnMeasuredCallback {
-    void onMeasured(View view, int width, int height);
-  }
-
-  public static void waitForMeasure(final View view, final OnMeasuredCallback callback) {
-    int width = view.getWidth();
-    int height = view.getHeight();
-
-    if (width > 0 && height > 0) {
-      callback.onMeasured(view, width, height);
-      return;
+    public interface OnMeasuredCallback {
+        void onMeasured(View view, int width, int height);
     }
 
-    view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-      @Override
-      public boolean onPreDraw() {
-        final ViewTreeObserver observer = view.getViewTreeObserver();
-        if (observer.isAlive()) {
-          observer.removeOnPreDrawListener(this);
+    public static void waitForMeasure(final View view, final OnMeasuredCallback callback) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+
+        if (width > 0 && height > 0) {
+            callback.onMeasured(view, width, height);
+            return;
         }
 
-        callback.onMeasured(view, view.getWidth(), view.getHeight());
+        view.getViewTreeObserver().addOnPreDrawListener(
+            new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    final ViewTreeObserver observer = view.getViewTreeObserver();
+                    if (observer.isAlive()) {
+                        observer.removeOnPreDrawListener(this);
+                    }
 
-        return true;
-      }
-    });
-  }
+                    callback.onMeasured(view, view.getWidth(), view.getHeight());
 
-  private Utils() {
-  }
+                    return true;
+                }
+            });
+    }
+
+    public static View inflateScreenView(Context context, Class<?> screen) {
+        Layout screenLayout = screen.getAnnotation(Layout.class);
+        if (screenLayout == null) {
+            throw new IllegalArgumentException(
+                String.format("@%s annotation not found on class %s", Layout.class.getSimpleName(), screen.getName()));
+        }
+
+        int layout = screenLayout.value();
+        return LayoutInflater.from(context).inflate(layout, null);
+    }
+
+    private Utils() {
+    }
 }

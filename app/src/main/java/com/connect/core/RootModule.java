@@ -5,9 +5,8 @@ package com.connect.core;
  */
 
 import com.connect.TemplateApplicationImpl;
-import com.connect.activities.MainActivity;
+import com.connect.android.MainActivity;
 import com.connect.android.ActionBarOwner;
-import com.connect.screens.DrawerScreen;
 import com.connect.util.GsonParceler;
 import com.connect.util.RetrofitErrorHandler;
 import com.google.gson.Gson;

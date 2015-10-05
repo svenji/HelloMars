@@ -47,7 +47,6 @@ public class HomeView extends RelativeLayout {
         presenter.dropView(this);
     }
 
-    @DebugLog
     public void setHomeLabel(String sLabel) {
         tvHome.setText(sLabel);
     }

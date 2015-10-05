@@ -41,7 +41,6 @@ public class SimplePathContainer extends PathContainer {
         final TraversalState traversalState, final Flow.Direction direction,
         final Flow.TraversalCallback callback
     ) {
-
         final PathContext context;
         final PathContext oldPath;
         if (containerView.getChildCount() > 0) {

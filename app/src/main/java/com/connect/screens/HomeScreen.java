@@ -35,8 +35,6 @@ public class HomeScreen extends Path {
     public static class Presenter extends ViewPresenter<HomeView> {
         private final String label;
 
-        private int counter = 0;
-
         @Inject
         Presenter(String label) {
             this.label = label;
@@ -46,18 +44,15 @@ public class HomeScreen extends Path {
         public void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (!hasView()) return;
-            if (savedInstanceState != null) {
-                counter = savedInstanceState.getInt("counter");
-            }
-            Timber.i("counter = " + counter);
-
-            getView().setHomeLabel(label + " " + counter);
+//            if (savedInstanceState != null) {
+//            }
+            getView().setHomeLabel(label);
         }
 
-        @Override
-        protected void onSave(Bundle outState) {
-            super.onSave(outState);
-            outState.putInt("counter", ++counter);
-        }
+        // Can typically avoid using onSave
+//        @Override
+//        protected void onSave(Bundle outState) {
+//            super.onSave(outState);
+//        }
     }
 }

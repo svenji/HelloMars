@@ -1,25 +1,23 @@
-package com.connect.activities;
+package com.connect.android;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.connect.R;
 import com.connect.android.ActionBarOwner;
 import com.connect.screens.HomeScreen;
 import com.connect.util.ObjectGraphService;
 import com.connect.views.FramePathContainerView;
+import com.connect.views.MainView;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -39,9 +37,8 @@ import timber.log.Timber;
 import static mortar.bundler.BundleServiceRunner.getBundleServiceRunner;
 
 public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, ActionBarOwner.Activity {
-    @Bind(R.id.drawer_layout) DrawerLayout           drawerLayout;
-    //    @Bind(R.id.left_drawer)   FramePathContainerView containerDrawer;
-    @Bind(R.id.main_view)     FramePathContainerView containerContent;
+    @Bind(R.id.drawer_layout)  MainView               vMain;
+    @Bind(R.id.main_container) FramePathContainerView container;
 
     @Inject Bus            bus;
     @Inject StateParceler  parceler;
@@ -71,53 +68,13 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         getBundleServiceRunner(activityScope).onCreate(savedInstanceState);
 
         // Set content view
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.main_view);
 
         // Bind views
         ButterKnife.bind(this);
 
         // Set up drawer toggle
-        toggleDrawer = new ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            R.string.drawer_open,
-            R.string.drawer_close
-        ) {
-            @Override
-            public void onDrawerSlide(View view, float fSlideOffset) {
-                super.onDrawerSlide(view, fSlideOffset);
-            }
-
-            @Override
-            public void onDrawerOpened(View view) {
-                super.onDrawerOpened(view);
-                invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerStateChanged(int i) {
-                // Close keyboard when opening/closing drawer
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-            }
-        };
-
-        drawerLayout.post(
-            new Runnable() {
-                @Override
-                public void run() {
-                    toggleDrawer.syncState();
-                }
-            }
-        );
-
-        drawerLayout.setDrawerListener(toggleDrawer);
+        toggleDrawer = vMain.getDrawerToggle();
 
         // Set up Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -199,7 +156,9 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         if (toggleDrawer.onOptionsItemSelected(item)) {
             return true;
         }
-
+        if (item.getItemId() == android.R.id.home) {
+            return container.onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -217,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     // BackSupport
     @Override
     public void onBackPressed() {
-        if (!containerContent.onBackPressed()) {
+        if (!container.onBackPressed()) {
             super.onBackPressed();
         }
     }
@@ -228,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         Path newScreen = traversal.destination.top();
         String title = newScreen.getClass().getSimpleName();
         actionBarOwner.setConfig(new ActionBarOwner.Config(true, newScreen instanceof HomeScreen, title));
-        containerContent.dispatch(traversal, callback);
+        container.dispatch(traversal, callback);
     }
 
     // ActionBarOwner.Activity
@@ -236,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     public void setDisplayShowHomeEnabled(boolean enabled) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            Timber.w("setDisplayShowHomeEnabled(%s)", enabled);
             actionBar.setDisplayShowHomeEnabled(enabled);
         }
     }
@@ -245,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     public void setHomeButtonEnabled(boolean enabled) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            Timber.w("setHomeButtonEnabled(%s)", enabled);
             actionBar.setDisplayHomeAsUpEnabled(enabled);
             actionBar.setHomeButtonEnabled(enabled);
         }
@@ -257,11 +214,6 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
-    }
-
-    @Override
-    public void setMenu(ActionBarOwner.MenuAction action) {
-        invalidateOptionsMenu();
     }
 
     @Override

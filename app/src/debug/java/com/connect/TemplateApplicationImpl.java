@@ -2,7 +2,7 @@ package com.connect;
 
 import android.support.annotation.NonNull;
 
-import com.connect.core.AndroidModule;
+import com.connect.android.AndroidModule;
 import com.connect.core.RootModule;
 import com.connect.core.TemplateApplication;
 import com.connect.util.ObjectGraphService;
@@ -11,8 +11,6 @@ import com.squareup.leakcanary.AndroidExcludedRefs;
 import com.squareup.leakcanary.DisplayLeakService;
 import com.squareup.leakcanary.ExcludedRefs;
 import com.squareup.leakcanary.LeakCanary;
-
-import java.util.List;
 
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;

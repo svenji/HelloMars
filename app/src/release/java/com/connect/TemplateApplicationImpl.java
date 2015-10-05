@@ -1,10 +1,8 @@
 package com.connect;
 
-import com.connect.core.AndroidModule;
+import com.connect.android.AndroidModule;
 import com.connect.core.TemplateApplication;
 import com.crashlytics.android.Crashlytics;
-
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 

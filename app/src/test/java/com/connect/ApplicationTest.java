@@ -1,15 +1,12 @@
 package com.connect;
 
-import com.connect.core.AndroidModule;
+import com.connect.android.AndroidModule;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-
-import java.util.List;
 
 import dagger.Module;
 

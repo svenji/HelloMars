@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import flow.path.Path;
 import mortar.ViewPresenter;
+import timber.log.Timber;
 
 /**
  * Created by sven on 9/29/15.
@@ -20,7 +21,7 @@ import mortar.ViewPresenter;
 @Layout(R.layout.drawer_view)
 @WithModule(DrawerScreen.Module.class)
 public class DrawerScreen extends Path {
-    @dagger.Module(injects = DrawerView.class, addsTo = RootModule.class, library = true, complete = false)
+    @dagger.Module(library = true, complete = false)
     public static class Module {
     }
 

@@ -1,4 +1,4 @@
-package com.connect.core;
+package com.connect.android;
 
 /**
  * Created by sven on 8/26/15.
@@ -10,8 +10,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.connect.TemplateApplicationImpl;
+import com.connect.core.RootModule;
 import com.connect.screens.DrawerScreen;
 import com.connect.views.DrawerView;
+import com.connect.views.MainView;
 
 import javax.inject.Singleton;
 
@@ -23,7 +25,12 @@ import dagger.Provides;
  */
 @Module(library = true,
     injects = {
-        TemplateApplicationImpl.class
+        TemplateApplicationImpl.class,
+        MainView.class,
+        DrawerView.class
+    },
+    includes = {
+        DrawerScreen.Module.class
     },
     addsTo = RootModule.class
 )

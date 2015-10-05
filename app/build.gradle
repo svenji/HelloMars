@@ -154,8 +154,8 @@ dependencies {
     compile 'com.squareup.mortar:mortar:0.19'
 
     // Flow
-    compile 'com.squareup.flow:flow:0.9'
-    compile 'com.squareup.flow:flow-path:0.9'
+    compile 'com.squareup.flow:flow:0.12'
+    compile 'com.squareup.flow:flow-path:0.12'
 
     // Image Loading
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -196,7 +196,7 @@ jacoco {
 }
 
 def coverageSourceDirs = [
-        '../app/src/main_activity/java'
+        '../app/src/main/java'
 ]
 
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {

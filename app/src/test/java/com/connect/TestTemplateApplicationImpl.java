@@ -2,12 +2,9 @@ package com.connect;
 
 import android.support.annotation.NonNull;
 
-import com.connect.core.AndroidModule;
+import com.connect.android.AndroidModule;
 import com.connect.core.RootModule;
 import com.connect.util.ObjectGraphService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import dagger.ObjectGraph;
 import mortar.MortarScope;

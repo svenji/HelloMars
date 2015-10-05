@@ -38,8 +38,6 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
 
         void setTitle(CharSequence title);
 
-        void setMenu(MenuAction action);
-
         Context getContext();
     }
 
@@ -75,7 +73,6 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
         if (config != null) update();
     }
 
-    @DebugLog
     public void setConfig(Config config) {
         this.config = config;
         update();
@@ -90,7 +87,6 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.Activity> {
         return getBundleService(activity.getContext());
     }
 
-    @DebugLog
     private void update() {
         if (!hasView()) return;
         Activity activity = getView();
