@@ -146,7 +146,11 @@ public class ScreenScoper {
       protected Object createDaggerModule(Resources resources, Object ignored) {
           try {
               return moduleConstructor.newInstance();
-          } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+          } catch (InstantiationException e) {
+              throw new RuntimeException(e);
+          } catch (IllegalAccessException e) {
+              throw new RuntimeException(e);
+          } catch (InvocationTargetException e) {
               throw new RuntimeException(e);
           }
       }
@@ -163,7 +167,11 @@ public class ScreenScoper {
         protected Object createDaggerModule(Resources resources, Object screen) {
             try {
                 return moduleConstructor.newInstance(screen);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         }

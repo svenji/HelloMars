@@ -14,12 +14,6 @@ import javax.inject.Inject;
  */
 public class DrawerView extends LinearLayout {
     @Inject DrawerScreen.Presenter presenter;
-    public DrawerView(Context context) {
-        super(context);
-        setOrientation(VERTICAL);
-        ObjectGraphService.inject(context, this);
-    }
-
     public DrawerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
